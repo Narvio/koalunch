@@ -1,5 +1,13 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import store from './store';
+import { createApp } from "vue";
 
-createApp(App).use(store).mount('#app');
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore
+import VueGridLayout from "vue-grid-layout";
+
+import App from "./App.vue";
+import store from "./store";
+
+createApp(App)
+  .use(store)
+  .use(VueGridLayout)
+  .mount("#app");
