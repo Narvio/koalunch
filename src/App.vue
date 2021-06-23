@@ -34,7 +34,7 @@ body {
 }
 .luncher-logo {
   background-image: url("./assets/logo_transparent.png");
-  height: 50%;
+  height: 40%;
 
   background-position: center;
   background-repeat: no-repeat;

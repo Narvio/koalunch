@@ -7,6 +7,7 @@
       :is-draggable="true"
       :is-resizable="true"
       :is-mirrored="false"
+      :responsive="true"
       :vertical-compact="true"
       :margin="[10, 10]"
       :use-css-transforms="true"
@@ -19,6 +20,8 @@
         :h="item.h"
         :i="item.i"
         :key="item.i"
+        drag-allow-from=".card-header"
+        drag-ignore-from=".luncher-card-content"
       >
         <div class="card luncher-card">
           <header class="card-header">
@@ -56,11 +59,6 @@
               <p>Polévka: Zabalit do REkrabičky</p>
             </div>
           </div>
-          <footer class="card-footer">
-            <a href="#" class="card-footer-item">Save</a>
-            <a href="#" class="card-footer-item">Edit</a>
-            <a href="#" class="card-footer-item">Delete</a>
-          </footer>
         </div>
       </grid-item>
     </grid-layout>
@@ -103,8 +101,9 @@ export default class Layout extends Vue {
 }
 
 .luncher-card-content {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 3rem;
+  bottom: 0;
   overflow-y: auto;
   padding: 0.75rem;
 }
@@ -112,5 +111,6 @@ export default class Layout extends Vue {
 .luncher-card-title {
   background-color: #d8a96c;
   color: black;
+  height: 3rem;
 }
 </style>
