@@ -21,13 +21,13 @@
         :i="item.i"
         :key="item.i"
         drag-allow-from=".card-header"
-        drag-ignore-from=".luncher-card-content"
+        drag-ignore-from=".koalunch-card-content"
       >
-        <div class="card luncher-card">
+        <div class="card koalunch-card">
           <header class="card-header">
-            <p class="card-header-title luncher-card-title">Eatology</p>
+            <p class="card-header-title koalunch-card-title">Eatology</p>
           </header>
-          <div class="content luncher-card-content">
+          <div class="content koalunch-card-content">
             <div class="">
               <p>Polévka: Hovězí vývar s játrovou rýží</p>
               <p>
@@ -94,13 +94,13 @@ export default class Layout extends Vue {
 </script>
 
 <style scoped>
-.luncher-card {
+.koalunch-card {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.luncher-card-content {
+.koalunch-card-content {
   position: absolute;
   top: 3rem;
   bottom: 0;
@@ -108,7 +108,7 @@ export default class Layout extends Vue {
   padding: 0.75rem;
 }
 
-.luncher-card-title {
+.koalunch-card-title {
   background-color: #d8a96c;
   color: black;
   height: 3rem;

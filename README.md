@@ -1,4 +1,4 @@
-# luncher
+# koalunch
 
 ## Project setup
 

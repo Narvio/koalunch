@@ -1,5 +1,5 @@
 <template>
-  <div class="luncher-logo" />
+  <div class="koalunch-logo" />
 
   <div class="container column is-5 field">
     <div class="control has-icons-left">
@@ -32,7 +32,7 @@ body {
   margin: 0;
   background-color: #477890;
 }
-.luncher-logo {
+.koalunch-logo {
   background-image: url("./assets/logo_transparent.png");
   height: 40%;
 
