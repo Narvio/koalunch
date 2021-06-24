@@ -9,16 +9,16 @@
       </span>
     </div>
   </div>
-  <layout></layout>
+  <dashboard></dashboard>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Layout from "./components/Layout.vue";
+import Dashboard from "./components/Dashboard.vue";
 
 @Options({
   components: {
-    Layout,
+    Dashboard,
   },
 })
 export default class App extends Vue {}
