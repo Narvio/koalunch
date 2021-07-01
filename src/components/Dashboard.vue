@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts">
+import { RestaurantData } from "@/api/responses/Menu";
 import { Vue, Options } from "vue-class-component";
 import RestaurandCard from "./RestaurandCard.vue";
 
@@ -39,6 +40,7 @@ interface GridItem {
   w: number;
   h: number;
   i: string;
+  restaurant: RestaurantData;
 }
 
 @Options({
@@ -48,14 +50,23 @@ interface GridItem {
   props: {},
 })
 export default class Dashboard extends Vue {
-  layout: GridItem[] = [
-    {
-      x: 0,
-      y: 0,
-      w: 5,
-      h: 10,
-      i: "1",
-    },
-  ];
+  restaurants: RestaurantData[] = [];
+
+  layout: GridItem[] = [];
+
+  async mounted(): Promise<void> {
+    const response = await fetch("/api/restaurant");
+
+    this.restaurants = await response.json();
+
+    this.layout = this.restaurants.map((r, index) => ({
+      x: (index * 3) % 12,
+      y: index + 12,
+      w: 3,
+      h: 5,
+      i: r.id,
+      restaurant: r,
+    }));
+  }
 }
 </script>

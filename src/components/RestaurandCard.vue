@@ -45,11 +45,12 @@ import BusyIndicator from "./utils/BusyIndicator.vue";
 })
 export default class RestaurantCard extends Vue {
   isLoading = true;
+  restaurantId!: string;
   restaurant: RestaurantData | null = null;
   sections: MenuData[] = [];
 
   async mounted(): Promise<void> {
-    const response = await fetch("/api/menu/tustoTitanium");
+    const response = await fetch(`/api/menu/${this.restaurantId}`);
     const data = (await response.json()) as MenuApiResponse;
 
     this.restaurant = data.restaurant;
