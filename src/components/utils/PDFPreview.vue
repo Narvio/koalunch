@@ -77,15 +77,13 @@ export default class PDFPreview extends Vue {
 <style scoped>
 .koalunch-failure-text {
   font-size: 1.5rem;
-  height: 2rem;
 }
 .koalunch-failure {
   width: 100%;
   height: 100%;
 }
 .koalunch-failure-image {
-  height: 75%;
+  height: 35%;
   width: auto;
-  object-fit: contain;
 }
 </style>
