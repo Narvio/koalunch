@@ -23,7 +23,8 @@ module.exports = {
     "lines-between-class-members": ["off"],
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
-    "prefer-destructuring": ["off"]
+    "prefer-destructuring": ["off"],
+    "no-param-reassign": ["off"]
   },
   overrides: [{
     files: [

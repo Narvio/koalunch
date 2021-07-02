@@ -8,13 +8,13 @@
 import { MenuPDFInfo } from "@/api/responses/Menu";
 import { PropType } from "@vue/runtime-core";
 import { Vue, Options } from "vue-class-component";
+import pdfjsLib_, { PDFPageProxy } from "pdfjs-dist/webpack";
 
 /* eslint-disable */
-let x = { a: 42 };
-
-let y = x?.a;
 const pdfjsLib = require("pdfjs-dist/webpack");
 /* eslint-enable */
+
+type PDFLibType = typeof pdfjsLib_;
 
 @Options({
   props: {
@@ -24,30 +24,35 @@ const pdfjsLib = require("pdfjs-dist/webpack");
 export default class PDFPreview extends Vue {
   pdfInfo!: MenuPDFInfo;
 
-  /* eslint-disable */
-  pdfLib = pdfjsLib;
+  pdfLib: PDFLibType = pdfjsLib;
 
   async mounted(): Promise<void> {
     const corsAwareUrl = `https://cors-anywhere.herokuapp.com/${this.pdfInfo.url}`;
     const pdfSource = this.pdfInfo.content ?? corsAwareUrl;
 
-    let page = await this.loadPdf(pdfSource, this.pdfInfo.pages[0]);
+    try {
+      const page = await this.loadPdf(pdfSource, this.pdfInfo.pages[0]);
 
-    this.renderPage(this.$refs.canvas as HTMLCanvasElement, 0.75, page);
+      this.renderPage(this.$refs.canvas as HTMLCanvasElement, 0.75, page);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  private async loadPdf(source: any, page: number): Promise<any> {
-    let document = await this.pdfLib.getDocument(source).promise;
-    return await document.getPage(page);
+  private async loadPdf(
+    source: ArrayBuffer,
+    page: number
+  ): Promise<PDFPageProxy> {
+    const document = await this.pdfLib.getDocument(source).promise;
+    return document.getPage(page);
   }
 
   private renderPage(
     canvas: HTMLCanvasElement,
     scale: number,
-    page: any
+    page: PDFPageProxy
   ): void {
-    debugger;
-    let viewport = page.getViewport({
+    const viewport = page.getViewport({
       scale: scale,
     });
 
@@ -55,7 +60,7 @@ export default class PDFPreview extends Vue {
     canvas.width = viewport.width;
 
     page.render({
-      canvasContext: canvas.getContext("2d"),
+      canvasContext: canvas.getContext("2d") as CanvasRenderingContext2D,
       viewport: viewport,
     });
   }
