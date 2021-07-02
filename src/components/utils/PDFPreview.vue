@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div v-if="isFailed" class="koalunch-failure">
+    <p class="koalunch-failure-text">Menu se nepovedlo načíst</p>
+    <img src="../../assets/wrong.png" class="koalunch-failure-image" />
+  </div>
+  <div v-if="!isFailed">
     <canvas ref="canvas"></canvas>
   </div>
 </template>
@@ -22,11 +26,14 @@ type PDFLibType = typeof pdfjsLib_;
   },
 })
 export default class PDFPreview extends Vue {
+  isFailed = false;
   pdfInfo!: MenuPDFInfo;
 
   pdfLib: PDFLibType = pdfjsLib;
 
   async mounted(): Promise<void> {
+    this.isFailed = false;
+
     const corsAwareUrl = `https://cors-anywhere.herokuapp.com/${this.pdfInfo.url}`;
     const pdfSource = this.pdfInfo.content ?? corsAwareUrl;
 
@@ -35,7 +42,7 @@ export default class PDFPreview extends Vue {
 
       this.renderPage(this.$refs.canvas as HTMLCanvasElement, 0.75, page);
     } catch (e) {
-      console.log(e);
+      this.isFailed = true;
     }
   }
 
@@ -68,13 +75,17 @@ export default class PDFPreview extends Vue {
 </script>
 
 <style scoped>
-.koalunch-busyIndicator {
+.koalunch-failure-text {
+  font-size: 1.5rem;
+  height: 2rem;
+}
+.koalunch-failure {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  justify-content: center;
+}
+.koalunch-failure-image {
+  height: 75%;
+  width: auto;
+  object-fit: contain;
 }
 </style>
