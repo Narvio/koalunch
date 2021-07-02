@@ -19,7 +19,10 @@ module.exports = {
     "max-len": ["off"],
     "class-methods-use-this": ["off"],
     "object-shorthand": ["off"],
-    "lines-between-class-members": ["off"]
+    "lines-between-class-members": ["off"],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "prefer-destructuring": ["off"]
   },
   overrides: [{
     files: [

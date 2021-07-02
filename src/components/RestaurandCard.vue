@@ -15,11 +15,17 @@
     <div class="content koalunch-card-content">
       <busy-indicator v-if="isLoading" />
 
-      <menu-section
-        v-for="section in sections"
-        :section="section"
-        :key="section"
-      />
+      <template v-if="menu">
+        <PDFPreview v-if="isPdfMenu" :pdfInfo="menu.pdfInfo" />
+
+        <template v-if="menu.menus && menu.menus.length !== 0">
+          <menu-section
+            v-for="section in menu.menus"
+            :section="section"
+            :key="section"
+          />
+        </template>
+      </template>
     </div>
   </div>
 </template>
@@ -28,16 +34,18 @@
 import { Vue, Options } from "vue-class-component";
 import {
   MenuApiResponse,
-  MenuData,
+  MenuType,
   RestaurantData,
 } from "../api/responses/Menu";
 import MenuSection from "./restaurant/MenuSection.vue";
 import BusyIndicator from "./utils/BusyIndicator.vue";
+import PDFPreview from "./utils/PDFPreview.vue";
 
 @Options({
   components: {
     MenuSection,
     BusyIndicator,
+    PDFPreview,
   },
   props: {
     restaurantId: String,
@@ -47,15 +55,19 @@ export default class RestaurantCard extends Vue {
   isLoading = true;
   restaurantId!: string;
   restaurant: RestaurantData | null = null;
-  sections: MenuData[] = [];
+  menu: MenuApiResponse | null = null;
 
   async mounted(): Promise<void> {
     const response = await fetch(`/api/menu/${this.restaurantId}`);
     const data = (await response.json()) as MenuApiResponse;
 
     this.restaurant = data.restaurant;
-    this.sections = data.menus;
+    this.menu = data;
     this.isLoading = false;
+  }
+
+  get isPdfMenu(): boolean {
+    return this.menu?.type === MenuType.PDF;
   }
 }
 </script>
