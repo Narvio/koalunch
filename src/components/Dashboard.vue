@@ -80,13 +80,11 @@ export default class Dashboard extends Vue {
   }
 
   filterLayout(query: string): void {
-    /* eslint-disable */
     const lowerCaseQuery = query.toLowerCase();
 
-    this.filteredLayout = this.layout.filter((item) =>
-      item.restaurant.name.toLowerCase().includes(lowerCaseQuery)
+    this.filteredLayout = this.layout.filter(
+      (item) => item.restaurant.name.toLowerCase().includes(lowerCaseQuery)
     );
-    /* eslint-enable */
   }
 }
 </script>
