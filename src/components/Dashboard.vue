@@ -1,7 +1,7 @@
 <template>
   <div>
     <grid-layout
-      v-model:layout="layout"
+      v-model:layout="filteredLayout"
       :col-num="12"
       :row-height="30"
       :is-draggable="true"
@@ -13,7 +13,7 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="item in layout"
+        v-for="item in filteredLayout"
         :x="item.x"
         :y="item.y"
         :w="item.w"
@@ -47,12 +47,21 @@ interface GridItem {
   components: {
     RestaurandCard,
   },
-  props: {},
+  props: {
+    searchQuery: String,
+  },
+  watch: {
+    searchQuery(query: string): void {
+      this.filterLayout(query);
+    },
+  },
 })
 export default class Dashboard extends Vue {
+  searchQuery = "";
   restaurants: RestaurantData[] = [];
 
   layout: GridItem[] = [];
+  filteredLayout: GridItem[] = [];
 
   async mounted(): Promise<void> {
     const response = await fetch("/api/restaurant");
@@ -67,6 +76,17 @@ export default class Dashboard extends Vue {
       i: r.id,
       restaurant: r,
     }));
+    this.filteredLayout = this.layout;
+  }
+
+  filterLayout(query: string): void {
+    /* eslint-disable */
+    const lowerCaseQuery = query.toLowerCase();
+
+    this.filteredLayout = this.layout.filter((item) =>
+      item.restaurant.name.toLowerCase().includes(lowerCaseQuery)
+    );
+    /* eslint-enable */
   }
 }
 </script>

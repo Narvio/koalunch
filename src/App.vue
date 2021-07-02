@@ -3,13 +3,19 @@
 
   <div class="container column is-5 field">
     <div class="control has-icons-left">
-      <input class="input" type="text" placeholder="Search restaurant" />
+      <input
+        class="input"
+        type="text"
+        placeholder="Search restaurant"
+        v-model.trim="searchInputValue"
+        @blur="focus = false"
+      />
       <span class="icon is-left">
         <img src="./assets/search.svg" />
       </span>
     </div>
   </div>
-  <dashboard></dashboard>
+  <dashboard :searchQuery="searchExpression"></dashboard>
 </template>
 
 <script lang="ts">
@@ -20,8 +26,30 @@ import Dashboard from "./components/Dashboard.vue";
   components: {
     Dashboard,
   },
+  watch: {
+    searchInputValue(value: string) {
+      this.debounceSearch(value);
+    },
+  },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  static DebounceInterval = 500;
+
+  searchTimeout = 0;
+  searchInputValue = "";
+  searchExpression = "";
+
+  debounceSearch(query: string): void {
+    if (this.searchTimeout) {
+      clearInterval(this.searchTimeout);
+    }
+
+    this.searchTimeout = setTimeout(() => {
+      this.searchExpression = query;
+      this.searchTimeout = 0;
+    }, App.DebounceInterval);
+  }
+}
 </script>
 
 <style>
