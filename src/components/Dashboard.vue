@@ -23,7 +23,9 @@
         drag-allow-from=".card-header"
         drag-ignore-from=".koalunch-card-content"
       >
-        <restaurand-card :restaurantId="item.i" />
+        <restaurand-card
+          :restaurant="item.restaurant"
+        />
       </grid-item>
     </grid-layout>
   </div>
@@ -60,7 +62,6 @@ export default class Dashboard extends Vue {
   searchQuery = "";
   restaurants: RestaurantData[] = [];
 
-  layout: GridItem[] = [];
   filteredLayout: GridItem[] = [];
 
   async mounted(): Promise<void> {
@@ -68,23 +69,22 @@ export default class Dashboard extends Vue {
 
     this.restaurants = await response.json();
 
-    this.layout = this.restaurants.map((r, index) => ({
-      x: (index * 3) % 12,
-      y: index + 12,
-      w: 3,
-      h: 5,
-      i: r.id,
-      restaurant: r,
-    }));
-    this.filteredLayout = this.layout;
+    this.filterLayout("");
   }
 
   filterLayout(query: string): void {
     const lowerCaseQuery = query.toLowerCase();
 
-    this.filteredLayout = this.layout.filter(
-      (item) => item.restaurant.name.toLowerCase().includes(lowerCaseQuery)
-    );
+    this.filteredLayout = this.restaurants.filter(
+      (restaurant) => restaurant.name.toLowerCase().includes(lowerCaseQuery)
+    ).map((restaurant, index) => ({
+      x: (index * 3) % 12,
+      y: index + 12,
+      w: 3,
+      h: 10,
+      i: restaurant.id,
+      restaurant: restaurant,
+    }));
   }
 }
 </script>

@@ -1,4 +1,6 @@
 <template>
+  <nav-bar />
+
   <div class="koalunch-logo" />
 
   <div class="container column is-5 field">
@@ -6,7 +8,7 @@
       <input
         class="input"
         type="text"
-        placeholder="Search restaurant"
+        placeholder="Vyhledat restauraci"
         v-model.trim="searchInputValue"
         @blur="focus = false"
       />
@@ -21,9 +23,11 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Dashboard from "./components/Dashboard.vue";
+import NavBar from "./components/NavBar.vue";
 
 @Options({
   components: {
+    NavBar,
     Dashboard,
   },
   watch: {

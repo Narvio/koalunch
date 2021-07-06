@@ -50,19 +50,12 @@ export default class PDFPreview extends Vue {
     }
   }
 
-  private async loadPdf(
-    source: ArrayBuffer,
-    page: number
-  ): Promise<PDFPageProxy> {
+  private async loadPdf(source: ArrayBuffer, page: number): Promise<PDFPageProxy> {
     const document = await this.pdfLib.getDocument(source).promise;
     return document.getPage(page);
   }
 
-  private renderPage(
-    canvas: HTMLCanvasElement,
-    scale: number,
-    page: PDFPageProxy
-  ): void {
+  private renderPage(canvas: HTMLCanvasElement, scale: number, page: PDFPageProxy): void {
     const viewport = page.getViewport({
       scale: scale,
     });

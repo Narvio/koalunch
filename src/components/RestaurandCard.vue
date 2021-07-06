@@ -1,9 +1,11 @@
 <template>
   <div class="card koalunch-card">
-    <header class="card-header koalunch-card-header">
-      <p class="card-header-title koalunch-card-title">
-        {{ restaurant?.name }}
-      </p>
+    <header
+      class="card-header koalunch-card-header"
+    >
+      <p
+        class="card-header-title koalunch-card-title"
+      >{{ restaurant?.name }}</p>
       <a
         class="button is-ghost koalunch-card-header-button"
         target="_blank"
@@ -14,11 +16,20 @@
     </header>
     <div class="content koalunch-card-content">
       <busy-indicator v-if="isLoading" />
+      <failure-message
+        v-if="isFailed"
+        :message="'Menu se nepodařilo načíst'"
+      />
 
       <template v-if="menu">
-        <PDFPreview v-if="isPdfMenu" :pdfInfo="menu.pdfInfo" />
+        <PDFPreview
+          v-if="isPdfMenu"
+          :pdfInfo="menu.pdfInfo"
+        />
 
-        <template v-if="menu.menus && menu.menus.length !== 0">
+        <template
+          v-if="menu.menus && menu.menus.length !== 0"
+        >
           <menu-section
             v-for="section in menu.menus"
             :section="section"
@@ -31,6 +42,7 @@
 </template>
 
 <script lang="ts">
+import { PropType } from "@vue/runtime-core";
 import { Vue, Options } from "vue-class-component";
 import {
   MenuApiResponse,
@@ -39,6 +51,7 @@ import {
 } from "../api/responses/Menu";
 import MenuSection from "./restaurant/MenuSection.vue";
 import BusyIndicator from "./utils/BusyIndicator.vue";
+import FailureMessage from "./utils/FailureMessage.vue";
 import PDFPreview from "./utils/PDFPreview.vue";
 
 @Options({
@@ -46,24 +59,29 @@ import PDFPreview from "./utils/PDFPreview.vue";
     MenuSection,
     BusyIndicator,
     PDFPreview,
+    FailureMessage
   },
   props: {
-    restaurantId: String,
+    restaurant: Object as PropType<RestaurantData>
   },
 })
 export default class RestaurantCard extends Vue {
   isLoading = true;
-  restaurantId!: string;
+  isFailed = false;
   restaurant: RestaurantData | null = null;
   menu: MenuApiResponse | null = null;
 
   async mounted(): Promise<void> {
-    const response = await fetch(`/api/menu/${this.restaurantId}`);
-    const data = (await response.json()) as MenuApiResponse;
+    try {
+      const response = await fetch(`/api/menu/${this.restaurant?.id}`);
+      const data = (await response.json()) as MenuApiResponse;
 
-    this.restaurant = data.restaurant;
-    this.menu = data;
-    this.isLoading = false;
+      this.menu = data;
+      this.isLoading = false;
+    } catch (e) {
+      this.isFailed = true;
+      this.isLoading = false;
+    }
   }
 
   get isPdfMenu(): boolean {
