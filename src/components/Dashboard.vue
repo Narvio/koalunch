@@ -33,7 +33,9 @@
 
 <script lang="ts">
 import { RestaurantData } from "@/api/responses/Menu";
+import { ActionTypes } from "@/store/action-types";
 import { Vue, Options } from "vue-class-component";
+import { mapActions, mapState } from "vuex";
 import RestaurandCard from "./RestaurandCard.vue";
 
 interface GridItem {
@@ -52,6 +54,16 @@ interface GridItem {
   props: {
     searchQuery: String,
   },
+  methods: {
+    ...mapActions([
+      ActionTypes.LoadRestaurants
+    ])
+  },
+  computed: {
+    ...mapState([
+      "restaurants"
+    ]),
+  },
   watch: {
     searchQuery(query: string): void {
       this.filterLayout(query);
@@ -59,20 +71,21 @@ interface GridItem {
   },
 })
 export default class Dashboard extends Vue {
+  /* vuex mappings */
+  [ActionTypes.LoadRestaurants]!: () => Promise<void>;
+  restaurants!: RestaurantData[];
+  /* --- */
+
   searchQuery = "";
-  restaurants: RestaurantData[] = [];
 
   filteredLayout: GridItem[] = [];
 
   async mounted(): Promise<void> {
-    const response = await fetch("/api/restaurant");
-
-    this.restaurants = await response.json();
-
-    this.filterLayout("");
+    await this[ActionTypes.LoadRestaurants]();
+    this.filterLayout();
   }
 
-  filterLayout(query: string): void {
+  filterLayout(query = ""): void {
     const lowerCaseQuery = query.toLowerCase();
 
     this.filteredLayout = this.restaurants.filter(

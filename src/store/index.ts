@@ -1,12 +1,15 @@
+import { RestaurantData } from "@/api/responses/Menu";
+import { State } from "vue";
 import { createStore } from "vuex";
+import actions from "./actions";
+import mutations from "./mutations";
 
 export default createStore({
   state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  },
+    searchQuery: "",
+    restaurants: [] as RestaurantData[]
+  } as State,
+  mutations,
+  actions,
+  modules: {}
 });
