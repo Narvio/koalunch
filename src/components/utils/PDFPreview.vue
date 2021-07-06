@@ -1,8 +1,8 @@
 <template>
-  <div v-if="isFailed" class="koalunch-failure">
-    <p class="koalunch-failure-text">Menu se nepovedlo načíst</p>
-    <img src="../../assets/wrong.png" class="koalunch-failure-image" />
-  </div>
+  <failure-message
+    v-if="isFailed"
+    :message="'Menu se nepovedlo načíst'"
+  />
   <div v-if="!isFailed">
     <canvas ref="canvas"></canvas>
   </div>
@@ -13,6 +13,7 @@ import { MenuPDFInfo } from "@/api/responses/Menu";
 import { PropType } from "@vue/runtime-core";
 import { Vue, Options } from "vue-class-component";
 import pdfjsLib_, { PDFPageProxy } from "pdfjs-dist/webpack";
+import FailureMessage from "./FailureMessage.vue";
 
 /* eslint-disable */
 const pdfjsLib = require("pdfjs-dist/webpack");
@@ -21,6 +22,9 @@ const pdfjsLib = require("pdfjs-dist/webpack");
 type PDFLibType = typeof pdfjsLib_;
 
 @Options({
+  components: {
+    FailureMessage: FailureMessage
+  },
   props: {
     pdfInfo: Object as PropType<MenuPDFInfo>,
   },
@@ -75,15 +79,4 @@ export default class PDFPreview extends Vue {
 </script>
 
 <style scoped>
-.koalunch-failure-text {
-  font-size: 1.5rem;
-}
-.koalunch-failure {
-  width: 100%;
-  height: 100%;
-}
-.koalunch-failure-image {
-  height: 35%;
-  width: auto;
-}
 </style>
