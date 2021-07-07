@@ -55,20 +55,21 @@
 </template>
 <script lang="ts">
 
-import { Vue, Options } from "vue-class-component";
+import { defineComponent } from "vue";
 
-@Options({})
-export default class NavBar extends Vue {
-  currentLocation = "Brno (Holandská)"
-}
+export default defineComponent({
+  props: {
+    currentLocation: {
+      type: String,
+      default: "Brno (Holandská)"
+    }
+  }
+});
 
 </script>
 
 <style scoped>
 .koalunch-navbar-title {
   font-weight: 900;
-}
-
-.is-primary {
 }
 </style>
