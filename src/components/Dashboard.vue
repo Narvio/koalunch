@@ -1,16 +1,18 @@
 <template>
   <div>
     <grid-layout
+      ref="gridLayout"
       v-model:layout="layout"
-      :col-num="12"
+      :col-num="3"
       :row-height="30"
       :is-draggable="true"
       :is-resizable="true"
       :is-mirrored="false"
       :responsive="true"
       :vertical-compact="true"
-      :margin="[10, 10]"
+      :margin="[15, 15]"
       :use-css-transforms="true"
+      :cols="{ lg: 3, md: 3, sm: 1, xs: 1, xxs: 1}"
     >
       <grid-item
         v-for="item in layout"
@@ -88,6 +90,13 @@ export default class Dashboard extends Vue {
   async mounted(): Promise<void> {
     await this[ActionTypes.LoadRestaurants]();
     this.filterLayout();
+    this.resetInnerLayoutData();
+  }
+
+  resetInnerLayoutData(): void {
+    const gridLayout = this.$refs.gridLayout as any;
+    gridLayout.lastBreakpoint = null;
+    gridLayout.layouts = {};
   }
 
   filterLayout(query = ""): void {
@@ -97,9 +106,9 @@ export default class Dashboard extends Vue {
 
   recreateLayout(): void {
     this.layout = this.restaurants.map((restaurant, index) => ({
-      x: (index * 3) % 12,
-      y: index + 12,
-      w: 3,
+      x: index % 3,
+      y: Math.floor(index / 4),
+      w: 1,
       h: 10,
       i: restaurant.id,
       restaurant: restaurant,
