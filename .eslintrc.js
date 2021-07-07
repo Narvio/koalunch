@@ -25,7 +25,8 @@ module.exports = {
     "@typescript-eslint/no-shadow": ["error"],
     "prefer-destructuring": ["off"],
     "no-param-reassign": ["off"],
-    "import/prefer-default-export": ["off"]
+    "import/prefer-default-export": ["off"],
+    "no-underscore-dangle": ["off"]
   },
   overrides: [{
     files: [

@@ -1,3 +1,4 @@
 export enum MutationTypes {
-  RestaurantsLoaded = "RestaurantsLoaded"
+  RestaurantsLoaded = "RestaurantsLoaded",
+  SearchRestaurants = "SearchRestaurants"
 }

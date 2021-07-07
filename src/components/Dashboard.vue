@@ -1,7 +1,7 @@
 <template>
   <div>
     <grid-layout
-      v-model:layout="filteredLayout"
+      v-model:layout="layout"
       :col-num="12"
       :row-height="30"
       :is-draggable="true"
@@ -13,7 +13,7 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="item in filteredLayout"
+        v-for="item in layout"
         :x="item.x"
         :y="item.y"
         :w="item.w"
@@ -34,8 +34,9 @@
 <script lang="ts">
 import { RestaurantData } from "@/api/responses/Menu";
 import { ActionTypes } from "@/store/action-types";
+import { MutationTypes } from "@/store/mutation-types";
 import { Vue, Options } from "vue-class-component";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import RestaurandCard from "./RestaurandCard.vue";
 
 interface GridItem {
@@ -57,12 +58,15 @@ interface GridItem {
   methods: {
     ...mapActions([
       ActionTypes.LoadRestaurants
+    ]),
+    ...mapMutations([
+      MutationTypes.SearchRestaurants
     ])
   },
   computed: {
-    ...mapState([
-      "restaurants"
-    ]),
+    ...mapState({
+      restaurants: "visibleRestaurants"
+    }),
   },
   watch: {
     searchQuery(query: string): void {
@@ -73,12 +77,13 @@ interface GridItem {
 export default class Dashboard extends Vue {
   /* vuex mappings */
   [ActionTypes.LoadRestaurants]!: () => Promise<void>;
+  [MutationTypes.SearchRestaurants]!: (q: string) => void;
   restaurants!: RestaurantData[];
   /* --- */
 
   searchQuery = "";
 
-  filteredLayout: GridItem[] = [];
+  layout: GridItem[] = [];
 
   async mounted(): Promise<void> {
     await this[ActionTypes.LoadRestaurants]();
@@ -86,11 +91,12 @@ export default class Dashboard extends Vue {
   }
 
   filterLayout(query = ""): void {
-    const lowerCaseQuery = query.toLowerCase();
+    this[MutationTypes.SearchRestaurants](query);
+    this.recreateLayout();
+  }
 
-    this.filteredLayout = this.restaurants.filter(
-      (restaurant) => restaurant.name.toLowerCase().includes(lowerCaseQuery)
-    ).map((restaurant, index) => ({
+  recreateLayout(): void {
+    this.layout = this.restaurants.map((restaurant, index) => ({
       x: (index * 3) % 12,
       y: index + 12,
       w: 3,

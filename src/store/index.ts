@@ -7,7 +7,8 @@ import mutations from "./mutations";
 export default createStore({
   state: {
     searchQuery: "",
-    restaurants: [] as RestaurantData[]
+    restaurants: [] as RestaurantData[],
+    visibleRestaurants: [] as RestaurantData[]
   } as State,
   mutations,
   actions,
