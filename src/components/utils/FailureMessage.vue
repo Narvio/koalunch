@@ -9,16 +9,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from "vue-class-component";
 
-@Options({
+import { defineComponent } from "vue";
+
+export default defineComponent({
   props: {
     message: String
   }
-})
-export default class FailureMessage extends Vue {
-  message = "";
-}
+});
+
 </script>
 
 <style scoped>
