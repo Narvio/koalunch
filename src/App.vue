@@ -92,6 +92,11 @@ body {
 }
 
 .vue-resizable-handle {
-  opacity: 0;
+  background-color: white !important;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjYiIGhlaWdodD0iNiI+PHBhdGggZD0iTTYgNkgwVjQuMmg0LjJWMEg2djZ6IiBvcGFjaXR5PSIxIi8+PC9zdmc+") !important;
+  width: 15px !important;
+  height: 15px !important;
+  padding: 3px !important;
+  background-size: contain !important;
 }
 </style>

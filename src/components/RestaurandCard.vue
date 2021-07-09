@@ -112,6 +112,7 @@ export default class RestaurantCard extends Vue {
 <style scoped>
 .koalunch-card {
   overflow: hidden;
+  box-shadow: none;
 }
 
 .koalunch-card-content {

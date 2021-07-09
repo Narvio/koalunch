@@ -4,7 +4,7 @@
       ref="gridLayout"
       v-model:layout="layout"
       :col-num="3"
-      :row-height="1"
+      :row-height="30"
       :is-draggable="true"
       :is-resizable="true"
       :is-mirrored="false"

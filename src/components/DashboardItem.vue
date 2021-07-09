@@ -13,6 +13,9 @@
     drag-allow-from=".card-header"
     drag-ignore-from=".koalunch-card-content"
   >
+    <div
+      class="card koalunch-dashboard-item-filler"
+    />
     <restaurand-card
       :restaurant="item.restaurant"
       @resized="onCardResized"
@@ -50,12 +53,7 @@ export default defineComponent({
   methods: {
     onCardResized(newSize: CardSize): void {
       const gridItem = this.$refs.gridItem as any;
-
       const pos = gridItem.calcWH(newSize.height, newSize.width, true);
-
-      if ((gridItem.i === "myFoodHolandska" || gridItem.i === "eatologyHolandska")) {
-        console.log(`${gridItem.i}: ${newSize.height} (${pos.h})`);
-      }
 
       this.maxH = pos.h;
       this.minH = pos.h;
@@ -74,4 +72,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.koalunch-dashboard-item-filler {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
 </style>
