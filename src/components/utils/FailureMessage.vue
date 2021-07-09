@@ -29,7 +29,7 @@ export default defineComponent({
   height: 100%;
 }
 .koalunch-failure-image {
-  height: 35%;
+  height: 5rem;
   width: auto;
 }
 </style>

@@ -14,7 +14,7 @@ export default defineComponent({});
 <style scoped>
 .koalunch-busyIndicator {
   width: 100%;
-  height: 100%;
+  height: 5rem;
   display: flex;
   align-items: center;
   align-content: center;

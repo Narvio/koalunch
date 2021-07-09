@@ -1,5 +1,9 @@
 <template>
-  <div class="card koalunch-card">
+  <div
+    class="card koalunch-card"
+    ref="card"
+    :data-res="restaurant?.id"
+  >
     <header
       class="card-header koalunch-card-header"
     >
@@ -54,6 +58,11 @@ import BusyIndicator from "./utils/BusyIndicator.vue";
 import FailureMessage from "./utils/FailureMessage.vue";
 import PDFPreview from "./utils/PDFPreview.vue";
 
+export interface CardSize {
+  width: number;
+  height: number;
+}
+
 @Options({
   components: {
     MenuSection,
@@ -64,6 +73,7 @@ import PDFPreview from "./utils/PDFPreview.vue";
   props: {
     restaurant: Object as PropType<RestaurantData>
   },
+  emits: ["resized"]
 })
 export default class RestaurantCard extends Vue {
   isLoading = true;
@@ -72,6 +82,15 @@ export default class RestaurantCard extends Vue {
   menu: MenuApiResponse | null = null;
 
   async mounted(): Promise<void> {
+    const observer = new (window as any).ResizeObserver((entries: any[]) => {
+      this.$emit("resized", {
+        width: entries[0].contentRect.width,
+        height: entries[0].contentRect.height
+      } as CardSize);
+    });
+
+    observer.observe(this.$refs.card as Element);
+
     try {
       const response = await fetch(`/api/menu/${this.restaurant?.id}`);
       const data = (await response.json()) as MenuApiResponse;
@@ -92,18 +111,10 @@ export default class RestaurantCard extends Vue {
 
 <style scoped>
 .koalunch-card {
-  width: 100%;
-  height: 100%;
   overflow: hidden;
 }
 
 .koalunch-card-content {
-  position: absolute;
-  top: 3rem;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow-y: auto;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
 }

@@ -4,31 +4,21 @@
       ref="gridLayout"
       v-model:layout="layout"
       :col-num="3"
-      :row-height="30"
+      :row-height="1"
       :is-draggable="true"
       :is-resizable="true"
       :is-mirrored="false"
       :responsive="true"
       :vertical-compact="true"
-      :margin="[15, 15]"
+      :margin="[10, 10]"
       :use-css-transforms="true"
       :cols="{ lg: 3, md: 3, sm: 1, xs: 1, xxs: 1}"
     >
-      <grid-item
+      <dashboard-item
         v-for="item in layout"
-        :x="item.x"
-        :y="item.y"
-        :w="item.w"
-        :h="item.h"
-        :i="item.i"
+        :item="item"
         :key="item.i"
-        drag-allow-from=".card-header"
-        drag-ignore-from=".koalunch-card-content"
-      >
-        <restaurand-card
-          :restaurant="item.restaurant"
-        />
-      </grid-item>
+      />
     </grid-layout>
   </div>
 </template>
@@ -39,20 +29,11 @@ import { ActionTypes } from "@/store/action-types";
 import { MutationTypes } from "@/store/mutation-types";
 import { Vue, Options } from "vue-class-component";
 import { mapActions, mapMutations, mapState } from "vuex";
-import RestaurandCard from "./RestaurandCard.vue";
-
-interface GridItem {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  i: string;
-  restaurant: RestaurantData;
-}
+import DashboardItem, { GridItem } from "./DashboardItem.vue";
 
 @Options({
   components: {
-    RestaurandCard,
+    DashboardItem
   },
   props: {
     searchQuery: String,
@@ -84,6 +65,8 @@ export default class Dashboard extends Vue {
   /* --- */
 
   searchQuery = "";
+
+  processed: string[] = []
 
   layout: GridItem[] = [];
 
