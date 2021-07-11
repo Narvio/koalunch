@@ -8,7 +8,7 @@
       <input
         class="input"
         type="text"
-        placeholder="Vyhledat restauraci"
+        :placeholder="$t('dashboard.searchRestaurant')"
         v-model.trim="searchInputValue"
         @blur="focus = false"
       />

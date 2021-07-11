@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {
     "@vue/runtime-core": "^3.1.1",
@@ -15,9 +16,11 @@
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
     "vue-grid-layout": "^3.0.0-beta1",
+    "vue-i18n": "^9.1.0",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@intlify/vue-i18n-loader": "^2.1.0",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.4",
     "@types/pdfjs-dist": "^2.7.3",
@@ -38,6 +41,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-vue": "^7.6.0",
     "typescript": "~4.1.5",
+    "vue-cli-plugin-i18n": "~2.1.1",
     "worker-loader": "^3.0.8"
   }
 }

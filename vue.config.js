@@ -7,6 +7,7 @@ module.exports = {
       }
     }
   },
+
   chainWebpack: (config) => {
     config
       .plugin("html")
@@ -14,5 +15,17 @@ module.exports = {
         args[0].title = "Koalunch";
         return args;
       });
+  },
+
+  pluginOptions: {
+    i18n: {
+      locale: 'cs',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableLegacy: false,
+      runtimeOnly: false,
+      compositionOnly: false,
+      fullInstall: true
+    }
   }
 };

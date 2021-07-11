@@ -41,11 +41,13 @@
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">Kontakt</div>
+        <div
+          class="navbar-item"
+        >{{ $t("contact") }}</div>
         <div class="navbar-item">
           <div class="buttons">
             <a class="button is-primary">
-              <strong>Přidat restauraci</strong>
+              <strong>{{ $t("addRestaurant") }}</strong>
             </a>
           </div>
         </div>
