@@ -14,6 +14,7 @@
     drag-ignore-from=".koalunch-card-content"
   >
     <div
+      ref="filler"
       class="card koalunch-dashboard-item-filler"
     />
     <restaurand-card
@@ -41,7 +42,11 @@ export default defineComponent({
   data() {
     return {
       minH: 10,
-      maxH: Infinity
+      maxH: Infinity,
+      nonReactive: {} as {
+        isResizing: boolean;
+        cardSize: CardSize | undefined
+      }
     };
   },
   components: {
@@ -50,22 +55,43 @@ export default defineComponent({
   props: {
     item: Object as PropType<GridItem>
   },
+  mounted(): void {
+    const observer = new (window as any).ResizeObserver(() => {
+      if (!this.nonReactive.isResizing) {
+        this.onCardResized(this.nonReactive.cardSize);
+      }
+    });
+
+    observer.observe(this.$refs.filler as Element);
+  },
   methods: {
-    onCardResized(newSize: CardSize): void {
+    onCardResized(newSize?: CardSize): void {
       const gridItem = this.$refs.gridItem as any;
-      const pos = gridItem.calcWH(newSize.height, newSize.width, true);
+      if (!gridItem || !newSize) {
+        return;
+      }
 
-      this.maxH = pos.h;
-      this.minH = pos.h;
+      this.nonReactive.isResizing = true;
 
-      gridItem.eventBus.emit("resizeEvent", {
-        eventType: "resizeend",
-        i: gridItem.i,
-        x: gridItem.innerX,
-        y: gridItem.innerY,
-        h: pos.h,
-        w: pos.w
-      });
+      try {
+        const pos = gridItem.calcWH(newSize.height, newSize.width, true);
+
+        this.maxH = pos.h;
+        this.minH = pos.h;
+
+        gridItem.eventBus.emit("resizeEvent", {
+          eventType: "resizeend",
+          i: gridItem.i,
+          x: gridItem.innerX,
+          y: gridItem.innerY,
+          h: pos.h,
+          w: pos.w
+        });
+
+        this.nonReactive.cardSize = newSize;
+      } finally {
+        this.nonReactive.isResizing = false;
+      }
     }
   }
 });
