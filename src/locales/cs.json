@@ -1,7 +1,16 @@
 {
-  "contact": "Kontakt",
-  "addRestaurant": "Přidat restauraci",
   "dashboard": {
     "searchRestaurant": "Vyhledat restauraci"
+  },
+  "contact": {
+    "contact": "Kontakt",
+    "addRestaurant": "Přidat restauraci",
+    "restaurantName": "Název restaurace",
+    "restaurantUrl": "URL adresa",
+    "submit": "Odeslat",
+    "cancel": "Zrušit",
+    "yourName": "Tvoje jméno",
+    "addRestaurantMessage": "Nenašel jsi zde svou oblíbenou restauraci? Nevadí, dej nám vědět a my se pokusíme ji do seznamu zařadit!",
+    "note": "Poznámka"
   }
 }

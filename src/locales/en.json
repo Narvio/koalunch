@@ -1,7 +1,16 @@
 {
-	"contact": "Contact",
-	"addRestaurant": "Add Restaurant",
 	"dashboard": {
 		"searchRestaurant": "Search Restaurant"
+	},
+	"contact": {
+		"contact": "Contact",
+		"addRestaurant": "Add Restaurant",
+		"restaurantName": "Restaurant Name",
+		"restaurantUrl": "Restaurant URL",
+		"submit": "Submit",
+		"cancel": "Cancel",
+		"yourName": "Your Name",
+		"addRestaurantMessage": "Are you missing your favourite restaurant? Let us know and we will do our best to include it in our list!",
+		"note": "Note"
 	}
 }

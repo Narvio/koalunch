@@ -32,27 +32,41 @@
       <div class="navbar-end">
         <div
           class="navbar-item"
-        >{{ $t("contact") }}</div>
+        >{{ $t("contact.contact") }}</div>
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
-              <strong>{{ $t("addRestaurant") }}</strong>
+            <a
+              class="button is-primary"
+              @click="addRestaurant"
+            >
+              <strong>{{ $t("contact.addRestaurant") }}</strong>
             </a>
           </div>
         </div>
       </div>
     </div>
   </nav>
+  <Modal ref="addRestaurantDialog" />
 </template>
 <script lang="ts">
 
 import { defineComponent } from "vue";
+import Modal from "@/components/contact/AddRestaurantDialog.vue";
 
 export default defineComponent({
+  components: {
+    Modal
+  },
   props: {
     currentLocation: {
       type: String,
       default: "Brno (Holandská)"
+    }
+  },
+  methods: {
+    addRestaurant() {
+      const modal = this.$refs.addRestaurantDialog as InstanceType<typeof Modal>;
+      modal.toggle();
     }
   }
 });
