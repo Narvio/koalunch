@@ -11,6 +11,8 @@
     "cancel": "Zrušit",
     "yourName": "Tvoje jméno",
     "addRestaurantMessage": "Nenašel jsi zde svou oblíbenou restauraci? Nevadí, dej nám vědět a my se pokusíme ji do seznamu zařadit!",
-    "note": "Poznámka"
+    "note": "Poznámka",
+    "message": "Vzkaz",
+    "contactMessage": "Máš nějaké přípomínky nebo návrhy na zlepšení? Napiš nám zprávu a my na tom zapracujeme!"
   }
 }
