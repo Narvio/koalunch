@@ -36,4 +36,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.modal-content {
+  border-radius: 0.25rem;
+}
 </style>
