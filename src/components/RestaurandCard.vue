@@ -84,7 +84,7 @@ export default class RestaurantCard extends Vue {
   async mounted(): Promise<void> {
     const observer = new (window as any).ResizeObserver((entries: any[]) => {
       this.$emit("resized", {
-        width: entries[0].contentRect.width,
+        width: entries[0].contentRect.width > 0 ? entries[0].contentRect.width : window.screen.availWidth,
         height: entries[0].contentRect.height
       } as CardSize);
     });
