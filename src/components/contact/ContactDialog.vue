@@ -13,7 +13,15 @@
         >{{ $t("contact.yourName") }}</label>
 
         <div class="control">
-          <input class="input" type="text" />
+          <input
+            class="input"
+            type="text"
+            v-model="name.value"
+            :class="{
+              'is-danger': !name.isValid
+            }"
+            @change="_validate('name')"
+          />
         </div>
       </div>
 
@@ -23,7 +31,14 @@
         >{{ $t("contact.message") }}</label>
 
         <div class="control">
-          <textarea class="textarea"></textarea>
+          <textarea
+            class="textarea"
+            v-model="message.value"
+            :class="{
+              'is-danger': !message.isValid
+            }"
+            @change="_validate('message')"
+          ></textarea>
         </div>
       </div>
 
@@ -33,6 +48,7 @@
         <div class="control">
           <button
             class="button is-link"
+            @click="submit"
           >{{$t("contact.submit")}}</button>
         </div>
         <div class="control">
@@ -50,14 +66,61 @@
 import { defineComponent } from "vue";
 import Modal from "@/components/utils/Modal.vue";
 
+interface InputField {
+  value: string;
+  isValid: boolean;
+  isRequired: boolean;
+}
+
 export default defineComponent({
   components: {
     Modal
+  },
+  data() {
+    return {
+      asd: "",
+      name: {
+        value: "",
+        isValid: true,
+        isRequired: true
+      },
+      message: {
+        value: "",
+        isValid: true,
+        isRequired: true
+      }
+    };
   },
   methods: {
     toggle() {
       const modal = this.$refs.modal as InstanceType<typeof Modal>;
       modal.toggle();
+    },
+
+    submit(): void {
+      if (!this._validate()) {
+        return;
+      }
+
+      this._reset();
+      this.toggle();
+    },
+
+    _validate(fieldName?: string): boolean {
+      const fields = fieldName ? [(this as any)[fieldName] as InputField] : [this.name, this.message];
+
+      fields.forEach((field) => {
+        field.isValid = !field.isRequired || Boolean(field.value);
+      });
+
+      return fields.every((field) => field.isValid);
+    },
+
+    _reset() {
+      [this.name, this.message].forEach((field) => {
+        field.value = "";
+        field.isValid = true;
+      });
     }
   }
 });

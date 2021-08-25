@@ -13,7 +13,15 @@
         >{{ $t("contact.restaurantName") }}</label>
 
         <div class="control">
-          <input class="input" type="text" />
+          <input
+            class="input"
+            type="text"
+            v-model="restaurantName.value"
+            :class="{
+              'is-danger': !restaurantName.isValid
+            }"
+            @change="_validate('restaurantName')"
+          />
         </div>
       </div>
 
@@ -23,7 +31,15 @@
         >{{ $t("contact.restaurantUrl") }}</label>
 
         <div class="control">
-          <input class="input" type="text" />
+          <input
+            class="input"
+            type="text"
+            v-model="restaurantUrl.value"
+            :class="{
+              'is-danger': !restaurantUrl.isValid
+            }"
+            @change="_validate('restaurantUrl')"
+          />
         </div>
       </div>
 
@@ -33,7 +49,15 @@
         >{{ $t("contact.yourName") }}</label>
 
         <div class="control">
-          <input class="input" type="text" />
+          <input
+            class="input"
+            type="text"
+            v-model="name.value"
+            :class="{
+              'is-danger': !name.isValid
+            }"
+            @change="_validate('name')"
+          />
         </div>
       </div>
 
@@ -43,7 +67,14 @@
         >{{ $t("contact.note")}}</label>
 
         <div class="control">
-          <textarea class="textarea"></textarea>
+          <textarea
+            class="textarea"
+            v-model="note.value"
+            :class="{
+              'is-danger': !note.isValid
+            }"
+            @change="_validate('note')"
+          ></textarea>
         </div>
       </div>
 
@@ -53,6 +84,7 @@
         <div class="control">
           <button
             class="button is-link"
+            @click="submit"
           >{{$t("contact.submit")}}</button>
         </div>
         <div class="control">
@@ -70,14 +102,81 @@
 import { defineComponent } from "vue";
 import Modal from "@/components/utils/Modal.vue";
 
+interface InputField {
+  value: string;
+  isValid: boolean;
+  isRequired: boolean;
+}
+
 export default defineComponent({
+  _allFieds: "ASD",
   components: {
     Modal
+  },
+  data() {
+    return {
+      restaurantName: {
+        value: "",
+        isValid: true,
+        isRequired: true
+      },
+      restaurantUrl: {
+        value: "",
+        isValid: true,
+        isRequired: true
+      },
+      name: {
+        value: "",
+        isValid: true,
+        isRequired: true
+      },
+      note: {
+        value: "",
+        isValid: true,
+        isRequired: false
+      }
+    };
+  },
+  computed: {
+    allFields(): InputField[] {
+      return [
+        this.restaurantName,
+        this.restaurantUrl,
+        this.name,
+        this.note
+      ];
+    }
   },
   methods: {
     toggle() {
       const modal = this.$refs.modal as InstanceType<typeof Modal>;
       modal.toggle();
+    },
+
+    submit() {
+      if (!this._validate()) {
+        return;
+      }
+
+      this._reset();
+      this.toggle();
+    },
+
+    _validate(fieldName?: string): boolean {
+      const fields = fieldName ? [(this as any)[fieldName] as InputField] : this.allFields;
+
+      fields.forEach((field) => {
+        field.isValid = !field.isRequired || Boolean(field.value);
+      });
+
+      return fields.every((field) => field.isValid);
+    },
+
+    _reset() {
+      this.allFields.forEach((field) => {
+        field.value = "";
+        field.isValid = true;
+      });
     }
   }
 });
