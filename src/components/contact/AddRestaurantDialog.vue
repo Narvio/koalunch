@@ -155,9 +155,12 @@ export default defineComponent({
       ActionTypes.SendRestaurantFeedback
     ]),
 
+    modal(): InstanceType<typeof Modal> {
+      return this.$refs.modal as InstanceType<typeof Modal>;
+    },
+
     toggle() {
-      const modal = this.$refs.modal as InstanceType<typeof Modal>;
-      modal.toggle();
+      this.modal().toggle();
     },
 
     submit() {
@@ -165,15 +168,19 @@ export default defineComponent({
         return;
       }
 
-      this[ActionTypes.SendRestaurantFeedback]({
-        name: this.name.value,
-        note: this.note.value,
-        restaurantName: this.restaurantName.value,
-        restaurantUrl: this.restaurantUrl.value
-      } as RestaurantFeedbackData);
+      try {
+        this.modal().isBusy = true;
 
-      this._reset();
-      this.toggle();
+        this[ActionTypes.SendRestaurantFeedback]({
+          name: this.name.value,
+          note: this.note.value,
+          restaurantName: this.restaurantName.value,
+          restaurantUrl: this.restaurantUrl.value
+        } as RestaurantFeedbackData);
+      } finally {
+        this._reset();
+        this.toggle();
+      }
     },
 
     _validate(fieldName?: string): boolean {
@@ -187,6 +194,8 @@ export default defineComponent({
     },
 
     _reset() {
+      this.modal().isBusy = false;
+
       this.allFields.forEach((field) => {
         field.value = "";
         field.isValid = true;

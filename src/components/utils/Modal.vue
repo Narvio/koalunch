@@ -7,7 +7,8 @@
   >
     <div class="modal-background" @click="toggle"></div>
     <div class="modal-content">
-      <slot />
+      <busy-indicator v-if="isBusy" />
+      <slot v-if="!isBusy" />
     </div>
     <button
       class="modal-close is-large"
@@ -19,11 +20,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import BusyIndicator from "./BusyIndicator.vue";
 
 export default defineComponent({
+  components: { BusyIndicator },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      isBusy: false
     };
   },
   methods: {

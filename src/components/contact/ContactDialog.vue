@@ -99,23 +99,30 @@ export default defineComponent({
       ActionTypes.SendContactFeedback
     ]),
 
-    toggle() {
-      const modal = this.$refs.modal as InstanceType<typeof Modal>;
-      modal.toggle();
+    modal(): InstanceType<typeof Modal> {
+      return this.$refs.modal as InstanceType<typeof Modal>;
     },
 
-    submit(): void {
+    toggle() {
+      this.modal().toggle();
+    },
+
+    async submit(): Promise<void> {
       if (!this._validate()) {
         return;
       }
 
-      this[ActionTypes.SendContactFeedback]({
-        name: this.name.value,
-        note: this.message.value
-      } as ContactFeedbackData);
+      try {
+        this.modal().isBusy = true;
 
-      this._reset();
-      this.toggle();
+        await this[ActionTypes.SendContactFeedback]({
+          name: this.name.value,
+          note: this.message.value
+        } as ContactFeedbackData);
+      } finally {
+        this._reset();
+        this.toggle();
+      }
     },
 
     _validate(fieldName?: string): boolean {
@@ -129,6 +136,8 @@ export default defineComponent({
     },
 
     _reset() {
+      this.modal().isBusy = false;
+
       [this.name, this.message].forEach((field) => {
         field.value = "";
         field.isValid = true;

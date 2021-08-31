@@ -20,5 +20,6 @@ export default defineComponent({});
   align-content: center;
   text-align: center;
   justify-content: center;
+  overflow: hidden;
 }
 </style>
