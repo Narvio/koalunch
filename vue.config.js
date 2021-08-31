@@ -1,5 +1,6 @@
 /* eslint-disable */
 module.exports = {
+  publicPath: "/public/",
   devServer: {
     proxy: {
       "^/feedback": {
