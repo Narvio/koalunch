@@ -2,6 +2,9 @@
 module.exports = {
   devServer: {
     proxy: {
+      "^/feedback": {
+        target: "http://localhost:3333/"
+      },
       "^/api": {
         target: "http://localhost:3333/"
       }

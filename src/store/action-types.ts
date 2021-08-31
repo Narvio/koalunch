@@ -1,3 +1,5 @@
 export enum ActionTypes {
-  LoadRestaurants = "LoadRestaurants"
+  LoadRestaurants = "LoadRestaurants",
+  SendContactFeedback = "SendContactFeedback",
+  SendRestaurantFeedback = "SendRestaurantFeedback"
 }

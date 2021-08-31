@@ -101,6 +101,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Modal from "@/components/utils/Modal.vue";
+import { mapActions } from "vuex";
+import { ActionTypes } from "@/store/action-types";
+import { RestaurantFeedbackData } from "@/store/actions";
 
 interface InputField {
   value: string;
@@ -148,6 +151,10 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapActions([
+      ActionTypes.SendRestaurantFeedback
+    ]),
+
     toggle() {
       const modal = this.$refs.modal as InstanceType<typeof Modal>;
       modal.toggle();
@@ -157,6 +164,13 @@ export default defineComponent({
       if (!this._validate()) {
         return;
       }
+
+      this[ActionTypes.SendRestaurantFeedback]({
+        name: this.name.value,
+        note: this.note.value,
+        restaurantName: this.restaurantName.value,
+        restaurantUrl: this.restaurantUrl.value
+      } as RestaurantFeedbackData);
 
       this._reset();
       this.toggle();
