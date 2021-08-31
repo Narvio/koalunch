@@ -3,7 +3,10 @@
     v-if="isFailed"
     :message="'Menu se nepovedlo načíst'"
   />
-  <div v-if="!isFailed">
+  <div
+    v-if="!isFailed"
+    class="koalunch-pdf-container"
+  >
     <canvas ref="canvas"></canvas>
   </div>
 </template>
@@ -76,7 +79,7 @@ export default defineComponent({
     try {
       const page = await this._loadPdf(pdfSource, this.pdfInfo.pages[0]);
 
-      this._renderPage(this.$refs.canvas as HTMLCanvasElement, 0.75, page);
+      this._renderPage(this.$refs.canvas as HTMLCanvasElement, 0.9, page);
     } catch (e) {
       this.isFailed = true;
     }
@@ -85,4 +88,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.koalunch-pdf-container {
+  overflow-x: auto;
+}
 </style>

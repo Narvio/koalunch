@@ -12,7 +12,7 @@
       :vertical-compact="true"
       :margin="[10, 10]"
       :use-css-transforms="true"
-      :cols="{ lg: 3, md: 3, sm: 1, xs: 1, xxs: 1}"
+      :cols="{ lg: 3, md: 2, sm: 1, xs: 1, xxs: 1}"
     >
       <dashboard-item
         v-for="item in layout"
