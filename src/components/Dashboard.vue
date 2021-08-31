@@ -83,8 +83,15 @@ export default class Dashboard extends Vue {
   }
 
   filterLayout(query = ""): void {
-    this[MutationTypes.SearchRestaurants](query);
-    this.recreateLayout();
+    if (query !== "") {
+      this[MutationTypes.SearchRestaurants]("");
+      this.recreateLayout();
+    }
+
+    this.$nextTick(() => {
+      this[MutationTypes.SearchRestaurants](query);
+      this.recreateLayout();
+    });
   }
 
   recreateLayout(): void {
