@@ -18,6 +18,22 @@
     </div>
   </div>
   <dashboard :searchQuery="searchExpression"></dashboard>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>Koalunch</strong> by
+        <a
+          href="https://www.linkedin.com/in/michalkozubik/"
+        >Michal Kozubík</a> |
+        <a
+          href="https://narvio.github.io/"
+        >Narvio</a> |
+        <a
+          href="https://github.com/Narvio/koalunch"
+        >GitHub</a>
+      </p>
+    </div>
+  </footer>
 </template>
 
 <script lang="ts">
@@ -98,5 +114,10 @@ body {
   height: 15px !important;
   padding: 3px !important;
   background-size: contain !important;
+}
+
+.footer {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 </style>
