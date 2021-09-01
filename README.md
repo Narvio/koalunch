@@ -1,5 +1,8 @@
 # koalunch
 
+[![Node.js CI](https://github.com/Narvio/koalunch/actions/workflows/unit-tests.yml/badge.svg?branch=master)](https://github.com/Narvio/koalunch/actions/workflows/unit-tests.yml)
+
+
 ## Project setup
 
 ```
