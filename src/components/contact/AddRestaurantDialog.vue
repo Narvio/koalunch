@@ -20,7 +20,7 @@
             :class="{
               'is-danger': !restaurantName.isValid
             }"
-            @change="_validate('restaurantName')"
+            @change="validate('restaurantName')"
           />
         </div>
       </div>
@@ -38,7 +38,7 @@
             :class="{
               'is-danger': !restaurantUrl.isValid
             }"
-            @change="_validate('restaurantUrl')"
+            @change="validate('restaurantUrl')"
           />
         </div>
       </div>
@@ -56,7 +56,7 @@
             :class="{
               'is-danger': !name.isValid
             }"
-            @change="_validate('name')"
+            @change="validate('name')"
           />
         </div>
       </div>
@@ -73,7 +73,7 @@
             :class="{
               'is-danger': !note.isValid
             }"
-            @change="_validate('note')"
+            @change="validate('note')"
           ></textarea>
         </div>
       </div>
@@ -100,19 +100,24 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Modal from "@/components/utils/Modal.vue";
 import { mapActions } from "vuex";
 import { ActionTypes } from "@/store/action-types";
 import { RestaurantFeedbackData } from "@/store/actions";
 
-interface InputField {
-  value: string;
-  isValid: boolean;
-  isRequired: boolean;
-}
+import Modal from "@/components/utils/Modal.vue";
+import ModalMixin from "@/components/utils/ModalMixin";
+import createValidatorMixin from "@/components/contact/FormValidatorMixin";
 
 export default defineComponent({
-  _allFieds: "ASD",
+  mixins: [
+    ModalMixin,
+    createValidatorMixin([
+      "restaurantName",
+      "restaurantUrl",
+      "name",
+      "note"
+    ])
+  ],
   components: {
     Modal
   },
@@ -140,36 +145,18 @@ export default defineComponent({
       }
     };
   },
-  computed: {
-    allFields(): InputField[] {
-      return [
-        this.restaurantName,
-        this.restaurantUrl,
-        this.name,
-        this.note
-      ];
-    }
-  },
   methods: {
     ...mapActions([
       ActionTypes.SendRestaurantFeedback
     ]),
 
-    modal(): InstanceType<typeof Modal> {
-      return this.$refs.modal as InstanceType<typeof Modal>;
-    },
-
-    toggle() {
-      this.modal().toggle();
-    },
-
     submit() {
-      if (!this._validate()) {
+      if (!this.validate()) {
         return;
       }
 
       try {
-        this.modal().isBusy = true;
+        this.setBusy(true);
 
         this[ActionTypes.SendRestaurantFeedback]({
           name: this.name.value,
@@ -178,28 +165,10 @@ export default defineComponent({
           restaurantUrl: this.restaurantUrl.value
         } as RestaurantFeedbackData);
       } finally {
-        this._reset();
+        this.setBusy(false);
+        this.resetFields();
         this.toggle();
       }
-    },
-
-    _validate(fieldName?: string): boolean {
-      const fields = fieldName ? [(this as any)[fieldName] as InputField] : this.allFields;
-
-      fields.forEach((field) => {
-        field.isValid = !field.isRequired || Boolean(field.value);
-      });
-
-      return fields.every((field) => field.isValid);
-    },
-
-    _reset() {
-      this.modal().isBusy = false;
-
-      this.allFields.forEach((field) => {
-        field.value = "";
-        field.isValid = true;
-      });
     }
   }
 });
