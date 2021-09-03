@@ -24,19 +24,26 @@
 </template>
 
 <script lang="ts">
-import { RestaurantData } from "@/api/responses/Menu";
+import { defineComponent, State } from "vue";
+import { mapActions, mapMutations, mapState } from "vuex";
+
 import { ActionTypes } from "@/store/action-types";
 import { MutationTypes } from "@/store/mutation-types";
-import { Vue, Options } from "vue-class-component";
-import { mapActions, mapMutations, mapState } from "vuex";
 import DashboardItem, { GridItem } from "./DashboardItem.vue";
 
-@Options({
+export default defineComponent({
   components: {
     DashboardItem
   },
   props: {
     searchQuery: String,
+  },
+  data() {
+    return {
+      layout: []
+    } as {
+      layout: GridItem[]
+    };
   },
   methods: {
     ...mapActions([
@@ -44,11 +51,39 @@ import DashboardItem, { GridItem } from "./DashboardItem.vue";
     ]),
     ...mapMutations([
       MutationTypes.SearchRestaurants
-    ])
+    ]),
+    resetInnerLayoutData(): void {
+      const gridLayout = this.$refs.gridLayout as any;
+      gridLayout.lastBreakpoint = null;
+      gridLayout.layouts = {};
+    },
+
+    filterLayout(query = ""): void {
+      if (query !== "") {
+        this[MutationTypes.SearchRestaurants]("");
+        this.recreateLayout();
+      }
+
+      this.$nextTick(() => {
+        this[MutationTypes.SearchRestaurants](query);
+        this.recreateLayout();
+      });
+    },
+
+    recreateLayout(): void {
+      this.layout = this.restaurants.map((restaurant, index) => ({
+        x: index % 3,
+        y: Math.floor(index / 4),
+        w: 1,
+        h: 10,
+        i: restaurant.id,
+        restaurant: restaurant,
+      }));
+    }
   },
   computed: {
     ...mapState({
-      restaurants: "visibleRestaurants"
+      restaurants: (state) => (state as State).visibleRestaurants,
     }),
   },
   watch: {
@@ -56,53 +91,10 @@ import DashboardItem, { GridItem } from "./DashboardItem.vue";
       this.filterLayout(query);
     },
   },
-})
-export default class Dashboard extends Vue {
-  /* vuex mappings */
-  [ActionTypes.LoadRestaurants]!: () => Promise<void>;
-  [MutationTypes.SearchRestaurants]!: (q: string) => void;
-  restaurants!: RestaurantData[];
-  /* --- */
-
-  searchQuery = "";
-
-  processed: string[] = []
-
-  layout: GridItem[] = [];
-
   async mounted(): Promise<void> {
     await this[ActionTypes.LoadRestaurants]();
     this.filterLayout();
     this.resetInnerLayoutData();
   }
-
-  resetInnerLayoutData(): void {
-    const gridLayout = this.$refs.gridLayout as any;
-    gridLayout.lastBreakpoint = null;
-    gridLayout.layouts = {};
-  }
-
-  filterLayout(query = ""): void {
-    if (query !== "") {
-      this[MutationTypes.SearchRestaurants]("");
-      this.recreateLayout();
-    }
-
-    this.$nextTick(() => {
-      this[MutationTypes.SearchRestaurants](query);
-      this.recreateLayout();
-    });
-  }
-
-  recreateLayout(): void {
-    this.layout = this.restaurants.map((restaurant, index) => ({
-      x: index % 3,
-      y: Math.floor(index / 4),
-      w: 1,
-      h: 10,
-      i: restaurant.id,
-      restaurant: restaurant,
-    }));
-  }
-}
+});
 </script>
