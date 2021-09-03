@@ -46,8 +46,8 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { PropType } from "@vue/runtime-core";
-import { Vue, Options } from "vue-class-component";
 import {
   MenuApiResponse,
   MenuType,
@@ -63,7 +63,7 @@ export interface CardSize {
   height: number;
 }
 
-@Options({
+export default defineComponent({
   components: {
     MenuSection,
     BusyIndicator,
@@ -73,13 +73,25 @@ export interface CardSize {
   props: {
     restaurant: Object as PropType<RestaurantData>
   },
-  emits: ["resized"]
-})
-export default class RestaurantCard extends Vue {
-  isLoading = true;
-  isFailed = false;
-  restaurant: RestaurantData | null = null;
-  menu: MenuApiResponse | null = null;
+  emits: ["resized"],
+
+  computed: {
+    isPdfMenu(): boolean {
+      return this.menu?.type === MenuType.PDF;
+    }
+  },
+
+  data() {
+    return {
+      isLoading: true,
+      isFailed: false,
+      menu: null
+    } as {
+      isLoading: boolean;
+      isFailed: boolean;
+      menu: MenuApiResponse | null;
+    };
+  },
 
   async mounted(): Promise<void> {
     const observer = new (window as any).ResizeObserver((entries: any[]) => {
@@ -101,12 +113,8 @@ export default class RestaurantCard extends Vue {
       this.isFailed = true;
       this.isLoading = false;
     }
-  }
-
-  get isPdfMenu(): boolean {
-    return this.menu?.type === MenuType.PDF;
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

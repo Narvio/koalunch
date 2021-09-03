@@ -37,39 +37,43 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Dashboard from "./components/Dashboard.vue";
-import NavBar from "./components/NavBar.vue";
+import { defineComponent } from "vue";
 
-@Options({
+import Dashboard from "@/components/Dashboard.vue";
+import NavBar from "@/components/NavBar.vue";
+
+const DebounceInterval = 500;
+
+export default defineComponent({
   components: {
     NavBar,
     Dashboard,
+  },
+  data() {
+    return {
+      searchTimeout: 0,
+      searchInputValue: "",
+      searchExpression: ""
+    };
   },
   watch: {
     searchInputValue(value: string) {
       this.debounceSearch(value);
     },
   },
-})
-export default class App extends Vue {
-  static DebounceInterval = 500;
+  methods: {
+    debounceSearch(query: string): void {
+      if (this.searchTimeout) {
+        clearInterval(this.searchTimeout);
+      }
 
-  searchTimeout = 0;
-  searchInputValue = "";
-  searchExpression = "";
-
-  debounceSearch(query: string): void {
-    if (this.searchTimeout) {
-      clearInterval(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {
+        this.searchExpression = query;
+        this.searchTimeout = 0;
+      }, DebounceInterval);
     }
-
-    this.searchTimeout = setTimeout(() => {
-      this.searchExpression = query;
-      this.searchTimeout = 0;
-    }, App.DebounceInterval);
   }
-}
+});
 </script>
 
 <style>
