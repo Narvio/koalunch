@@ -20,7 +20,7 @@
             :class="{
               'is-danger': !name.isValid
             }"
-            @change="_validate('name')"
+            @change="validate('name')"
           />
         </div>
       </div>
@@ -37,7 +37,7 @@
             :class="{
               'is-danger': !message.isValid
             }"
-            @change="_validate('message')"
+            @change="validate('message')"
           ></textarea>
         </div>
       </div>
@@ -64,24 +64,27 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Modal from "@/components/utils/Modal.vue";
 import { mapActions } from "vuex";
 import { ActionTypes } from "@/store/action-types";
 import { ContactFeedbackData } from "@/store/actions";
 
-interface InputField {
-  value: string;
-  isValid: boolean;
-  isRequired: boolean;
-}
+import Modal from "@/components/utils/Modal.vue";
+import ModalMixin from "@/components/utils/ModalMixin";
+import createValidatorMixin from "@/components/contact/FormValidatorMixin";
 
 export default defineComponent({
+  mixins: [
+    ModalMixin,
+    createValidatorMixin([
+      "name",
+      "message"
+    ])
+  ],
   components: {
     Modal
   },
   data() {
     return {
-      asd: "",
       name: {
         value: "",
         isValid: true,
@@ -99,49 +102,23 @@ export default defineComponent({
       ActionTypes.SendContactFeedback
     ]),
 
-    modal(): InstanceType<typeof Modal> {
-      return this.$refs.modal as InstanceType<typeof Modal>;
-    },
-
-    toggle() {
-      this.modal().toggle();
-    },
-
     async submit(): Promise<void> {
-      if (!this._validate()) {
+      if (!this.validate()) {
         return;
       }
 
       try {
-        this.modal().isBusy = true;
+        this.setBusy(true);
 
         await this[ActionTypes.SendContactFeedback]({
           name: this.name.value,
           note: this.message.value
         } as ContactFeedbackData);
       } finally {
-        this._reset();
+        this.setBusy(false);
+        this.resetFields();
         this.toggle();
       }
-    },
-
-    _validate(fieldName?: string): boolean {
-      const fields = fieldName ? [(this as any)[fieldName] as InputField] : [this.name, this.message];
-
-      fields.forEach((field) => {
-        field.isValid = !field.isRequired || Boolean(field.value);
-      });
-
-      return fields.every((field) => field.isValid);
-    },
-
-    _reset() {
-      this.modal().isBusy = false;
-
-      [this.name, this.message].forEach((field) => {
-        field.value = "";
-        field.isValid = true;
-      });
     }
   }
 });
