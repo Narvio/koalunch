@@ -1,6 +1,6 @@
 # Koalunch
 
-[![Node.js CI](https://github.com/Narvio/koalunch/actions/workflows/unit-tests.yml/badge.svg?branch=master)](https://github.com/Narvio/koalunch/actions/workflows/unit-tests.yml)
+[![Node.js CI](https://github.com/Narvio/koalunch/actions/workflows/unit-tests.yml/badge.svg?branch=main)](https://github.com/Narvio/koalunch/actions/workflows/unit-tests.yml)
 
 Hosted at https://koalunch.azurewebsites.net/
 
