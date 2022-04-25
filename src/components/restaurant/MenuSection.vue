@@ -3,6 +3,11 @@
     class="table is-striped is-narrow is-hoverable"
   >
     <tbody>
+      <tr v-if="section.name">
+        <td colspan="2">
+          <strong>{{ section.name }}</strong>
+        </td>
+      </tr>
       <tr
         v-for="meal in section.meals"
         :key="meal"

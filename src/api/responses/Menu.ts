@@ -15,6 +15,7 @@ export interface MealData {
 }
 
 export interface MenuData {
+  name?: string;
   meals: MealData[];
 }
 
