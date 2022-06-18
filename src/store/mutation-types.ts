@@ -1,4 +1,5 @@
 export enum MutationTypes {
   RestaurantsLoaded = "RestaurantsLoaded",
-  SearchRestaurants = "SearchRestaurants"
+  SearchRestaurants = "SearchRestaurants",
+  ApplyLayout = "ApplyLayout",
 }

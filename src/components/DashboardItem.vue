@@ -12,6 +12,8 @@
     :key="item.i"
     drag-allow-from=".card-header"
     drag-ignore-from=".koalunch-card-content"
+    @moved="onMoved"
+    @resized="onResized"
   >
     <div
       ref="filler"
@@ -39,13 +41,14 @@ export interface GridItem {
 }
 
 export default defineComponent({
+  emits: ["moved", "resized"],
   data() {
     return {
       minH: 10,
       maxH: Infinity,
       nonReactive: {} as {
         isResizing: boolean;
-        cardSize: CardSize | undefined
+        cardSize: CardSize | undefined;
       }
     };
   },
@@ -92,6 +95,12 @@ export default defineComponent({
       } finally {
         this.nonReactive.isResizing = false;
       }
+    },
+    onMoved() {
+      this.$emit("moved");
+    },
+    onResized() {
+      this.$emit("resized");
     }
   }
 });

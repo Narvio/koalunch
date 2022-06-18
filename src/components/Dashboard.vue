@@ -13,11 +13,14 @@
       :margin="[10, 10]"
       :use-css-transforms="true"
       :cols="{ lg: 3, md: 2, sm: 1, xs: 1, xxs: 1}"
+      @breakpoint-changed="onBreakpointChanged"
     >
       <dashboard-item
         v-for="item in layout"
         :item="item"
         :key="item.i"
+        @moved="onLayoutChanged"
+        @resized="onLayoutChanged"
       />
     </grid-layout>
   </div>
@@ -29,6 +32,8 @@ import { mapActions, mapMutations, mapState } from "vuex";
 
 import { ActionTypes } from "@/store/action-types";
 import { MutationTypes } from "@/store/mutation-types";
+import { RestaurantData } from "@/api/responses/Menu";
+import { ApplyLayoutParams, LayoutBreakpoint } from "@/store/StoredLayout";
 import DashboardItem, { GridItem } from "./DashboardItem.vue";
 
 export default defineComponent({
@@ -40,9 +45,11 @@ export default defineComponent({
   },
   data() {
     return {
-      layout: []
+      layout: [],
+      currentBreakpoint: "lg"
     } as {
-      layout: GridItem[]
+      layout: GridItem[];
+      currentBreakpoint: LayoutBreakpoint;
     };
   },
   methods: {
@@ -50,7 +57,8 @@ export default defineComponent({
       ActionTypes.LoadRestaurants
     ]),
     ...mapMutations([
-      MutationTypes.SearchRestaurants
+      MutationTypes.SearchRestaurants,
+      MutationTypes.ApplyLayout,
     ]),
     resetInnerLayoutData(): void {
       const gridLayout = this.$refs.gridLayout as any;
@@ -71,19 +79,54 @@ export default defineComponent({
     },
 
     recreateLayout(): void {
-      this.layout = this.restaurants.map((restaurant, index) => ({
-        x: index % 3,
-        y: Math.floor(index / 4),
-        w: 1,
-        h: 10,
-        i: restaurant.id,
-        restaurant: restaurant,
-      }));
+      const storedLayout = this.searchQuery ? [] : this.storedLayout[this.currentBreakpoint] || [];
+      const { withLayout, withoutLayout } = this.restaurants.reduce((acc, restaurant) => {
+        const layoutInfo = storedLayout.find(({ i }) => i === restaurant.id);
+        if (layoutInfo) {
+          acc.withLayout.push({
+            ...layoutInfo,
+            restaurant
+          });
+        } else {
+          acc.withoutLayout.push(restaurant);
+        }
+        return acc;
+      }, {
+        withLayout: [] as GridItem[],
+        withoutLayout: [] as RestaurantData[]
+      });
+
+      this.layout = withLayout.concat(
+        withoutLayout.map((restaurant, index) => ({
+          x: index % 3,
+          y: Math.floor(index / 4),
+          w: 1,
+          h: 10,
+          i: restaurant.id,
+          restaurant: restaurant,
+        }))
+      );
+    },
+    onLayoutChanged() {
+      this[MutationTypes.ApplyLayout]({
+        breakpoint: this.currentBreakpoint,
+        layout: this.layout.map((item) => ({
+          x: item.x,
+          y: item.y,
+          h: item.h,
+          w: item.w,
+          i: item.i
+        }))
+      } as ApplyLayoutParams);
+    },
+    onBreakpointChanged(breakpoint: LayoutBreakpoint) {
+      this.currentBreakpoint = breakpoint;
     }
   },
   computed: {
     ...mapState({
       restaurants: (state) => (state as State).visibleRestaurants,
+      storedLayout: (state) => (state as State).layout
     }),
   },
   watch: {
