@@ -3,18 +3,24 @@
 
   <div class="koalunch-logo" />
 
-  <div class="container column is-5 field">
-    <div class="control has-icons-left">
-      <input
-        class="input"
-        type="text"
-        :placeholder="$t('dashboard.searchRestaurant')"
-        v-model.trim="searchInputValue"
-        @blur="focus = false"
-      />
-      <span class="icon is-left">
-        <img src="./assets/search.svg" />
-      </span>
+  <div class="columns field search-row">
+    <div class="column is-4 is-offset-4">
+      <div class="control has-icons-left">
+        <input
+          class="input"
+          type="text"
+          :placeholder="$t('dashboard.searchRestaurant')"
+          v-model.trim="searchInputValue"
+        />
+        <span class="icon is-left">
+          <img src="./assets/search.svg" />
+        </span>
+      </div>
+    </div>
+    <div
+      class="column is-2 is-offset-2 align-right"
+    >
+      <show-favourites-switch />
     </div>
   </div>
   <dashboard :searchQuery="searchExpression"></dashboard>
@@ -41,6 +47,7 @@ import { defineComponent } from "vue";
 
 import Dashboard from "@/components/Dashboard.vue";
 import NavBar from "@/components/NavBar.vue";
+import ShowFavouritesSwitch from "@/components/ShowFavouritesSwitch.vue";
 
 const DebounceInterval = 500;
 
@@ -48,6 +55,7 @@ export default defineComponent({
   components: {
     NavBar,
     Dashboard,
+    ShowFavouritesSwitch,
   },
   data() {
     return {
@@ -123,5 +131,13 @@ body {
 .footer {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.search-row {
+  margin-top: 0.5rem;
+}
+
+.align-right {
+  text-align: right;
 }
 </style>

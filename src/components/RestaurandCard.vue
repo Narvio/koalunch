@@ -11,6 +11,24 @@
         class="card-header-title koalunch-card-title"
       >{{ restaurant?.name }}</p>
       <a
+        v-if="restaurant !== undefined"
+        class="button is-ghost koalunch-card-header-button"
+        @click="() => onFavourite(restaurant?.id || '')"
+      >
+        <img
+          v-if="favourites[restaurant.id]"
+          src="@/assets/favourite-filled.png"
+          width="24"
+          height="24"
+        />
+        <img
+          v-if="!favourites[restaurant.id]"
+          src="@/assets/favourite-empty.png"
+          width="24"
+          height="24"
+        />
+      </a>
+      <a
         class="button is-ghost koalunch-card-header-button"
         target="_blank"
         :href="restaurant?.url"
@@ -47,7 +65,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { PropType } from "@vue/runtime-core";
+import { PropType, State } from "@vue/runtime-core";
+import { mapMutations, mapState } from "vuex";
+import { MutationTypes } from "@/store/mutation-types";
 import {
   MenuApiResponse,
   MenuType,
@@ -76,6 +96,14 @@ export default defineComponent({
   emits: ["resized"],
 
   computed: {
+    ...mapState({
+      favourites: (state) => (state as State).favourites.reduce((acc, id) => ({
+        ...acc,
+        [id]: true
+      }), {} as {
+        [key: string]: boolean;
+      }),
+    }),
     isPdfMenu(): boolean {
       return this.menu?.type === MenuType.PDF;
     }
@@ -91,6 +119,15 @@ export default defineComponent({
       isFailed: boolean;
       menu: MenuApiResponse | null;
     };
+  },
+
+  methods: {
+    ...mapMutations([
+      MutationTypes.MarkFavourite
+    ]),
+    onFavourite(id: string) {
+      this[MutationTypes.MarkFavourite](id);
+    }
   },
 
   async mounted(): Promise<void> {
@@ -140,5 +177,6 @@ export default defineComponent({
 
 .koalunch-card-header-button {
   height: 100%;
+  padding-left: 0;
 }
 </style>

@@ -6,13 +6,10 @@ import { ApplyLayoutParams } from "./StoredLayout";
 export default {
   [MutationTypes.RestaurantsLoaded](state: State, restaurants: RestaurantData[]): void {
     state.restaurants = restaurants;
-    state.visibleRestaurants = restaurants;
   },
 
   [MutationTypes.SearchRestaurants](state: State, query = ""): void {
-    const lowerCaseQuery = query.toLowerCase();
     state.searchQuery = query;
-    state.visibleRestaurants = state.restaurants.filter((r) => r.name.toLowerCase().includes(lowerCaseQuery));
   },
 
   [MutationTypes.ApplyLayout](state: State, { breakpoint, layout }: ApplyLayoutParams): void {
@@ -28,5 +25,21 @@ export default {
     localStorage.setItem("layout", JSON.stringify({
       lg: state.layout.lg
     }));
+  },
+
+  [MutationTypes.MarkFavourite](state: State, id: string): void {
+    if (state.favourites.includes(id)) {
+      state.favourites = state.favourites.filter((i) => i !== id);
+    } else {
+      state.favourites.push(id);
+    }
+
+    localStorage.setItem("favourites", JSON.stringify(state.favourites));
+  },
+
+  [MutationTypes.ToggleFilterFavourites](state: State, enabled: boolean): void {
+    state.filterFavourites = enabled;
+
+    localStorage.setItem("filterFavourites", JSON.stringify(state.filterFavourites));
   }
 };

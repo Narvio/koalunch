@@ -12,7 +12,7 @@
   "dependencies": {
     "@vue/runtime-core": "^3.1.1",
     "core-js": "^3.6.5",
-    "pdfjs-dist": "^2.8.335",
+    "pdfjs-dist": "^2.14.305",
     "vue": "^3.0.0",
     "vue-grid-layout": "^3.0.0-beta1",
     "vue-i18n": "^9.1.0",
@@ -22,7 +22,7 @@
     "@intlify/vue-i18n-loader": "^2.1.0",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.4",
-    "@types/pdfjs-dist": "^2.7.3",
+    "@types/pdfjs-dist": "^2.10.378",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "^5.0.0-beta.2",

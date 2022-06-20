@@ -15,6 +15,8 @@
 import { defineComponent } from "vue";
 import { MenuPDFInfo } from "@/api/responses/Menu";
 import { PropType } from "@vue/runtime-core";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import pdfjsLib_, { PDFPageProxy } from "pdfjs-dist/webpack";
 import FailureMessage from "./FailureMessage.vue";
 

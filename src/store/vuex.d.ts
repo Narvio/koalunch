@@ -7,8 +7,9 @@ declare module "@vue/runtime-core" {
   interface State {
     searchQuery: string;
     restaurants: RestaurantData[];
-    visibleRestaurants: RestaurantData[];
     layout: StoredLayout;
+    favourites: string[];
+    filterFavourites: boolean;
   }
 
   interface ComponentCustomProperties {

@@ -28,7 +28,12 @@
 
 <script lang="ts">
 import { defineComponent, State } from "vue";
-import { mapActions, mapMutations, mapState } from "vuex";
+import {
+  mapActions,
+  mapGetters,
+  mapMutations,
+  mapState
+} from "vuex";
 
 import { ActionTypes } from "@/store/action-types";
 import { MutationTypes } from "@/store/mutation-types";
@@ -69,18 +74,16 @@ export default defineComponent({
     filterLayout(query = ""): void {
       if (query !== "") {
         this[MutationTypes.SearchRestaurants]("");
-        this.recreateLayout();
       }
 
       this.$nextTick(() => {
         this[MutationTypes.SearchRestaurants](query);
-        this.recreateLayout();
       });
     },
 
     recreateLayout(): void {
       const storedLayout = this.searchQuery ? [] : this.storedLayout[this.currentBreakpoint] || [];
-      const { withLayout, withoutLayout } = this.restaurants.reduce((acc, restaurant) => {
+      const { withLayout, withoutLayout } = (this.restaurants as RestaurantData[]).reduce((acc, restaurant) => {
         const layoutInfo = storedLayout.find(({ i }) => i === restaurant.id);
         if (layoutInfo) {
           acc.withLayout.push({
@@ -125,14 +128,19 @@ export default defineComponent({
   },
   computed: {
     ...mapState({
-      restaurants: (state) => (state as State).visibleRestaurants,
       storedLayout: (state) => (state as State).layout
     }),
+    ...mapGetters({
+      restaurants: "visibleRestaurants"
+    })
   },
   watch: {
     searchQuery(query: string): void {
       this.filterLayout(query);
     },
+    restaurants(): void {
+      this.recreateLayout();
+    }
   },
   async mounted(): Promise<void> {
     await this[ActionTypes.LoadRestaurants]();
