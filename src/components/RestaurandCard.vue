@@ -15,25 +15,28 @@
         class="button is-ghost koalunch-card-header-button"
         @click="() => onFavourite(restaurant?.id || '')"
       >
-        <img
-          v-if="favourites[restaurant.id]"
-          src="@/assets/favourite-filled.png"
-          width="24"
-          height="24"
-        />
-        <img
-          v-if="!favourites[restaurant.id]"
-          src="@/assets/favourite-empty.png"
-          width="24"
-          height="24"
-        />
+        <span
+          class="icon is-large ion-ionic koalunch-icon"
+        >
+          <ion-icon
+            size="large"
+            :name="'star' + (favourites[restaurant.id] ? '' : '-outline')"
+          />
+        </span>
       </a>
       <a
         class="button is-ghost koalunch-card-header-button"
         target="_blank"
         :href="restaurant?.url"
       >
-        <img src="../assets/external-link.svg" />
+        <span
+          class="icon is-large ion-ionic koalunch-icon"
+        >
+          <ion-icon
+            size="large"
+            name="open-outline"
+          />
+        </span>
       </a>
     </header>
     <div class="content koalunch-card-content">
@@ -177,6 +180,11 @@ export default defineComponent({
 
 .koalunch-card-header-button {
   height: 100%;
-  padding-left: 0;
+  margin-left: 0.5rem;
+  padding-left: 0rem;
+}
+.koalunch-icon {
+  opacity: 1;
+  color: black;
 }
 </style>

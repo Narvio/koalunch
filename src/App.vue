@@ -4,7 +4,10 @@
   <div class="koalunch-logo" />
 
   <div class="columns field search-row">
-    <div class="column is-4 is-offset-4">
+    <div class="column is-2 favourite-switch">
+      <show-favourites-switch />
+    </div>
+    <div class="column is-4 is-offset-2">
       <div class="control has-icons-left">
         <input
           class="input"
@@ -16,11 +19,6 @@
           <img src="./assets/search.svg" />
         </span>
       </div>
-    </div>
-    <div
-      class="column is-2 is-offset-2 align-right"
-    >
-      <show-favourites-switch />
     </div>
   </div>
   <dashboard :searchQuery="searchExpression"></dashboard>
@@ -137,7 +135,7 @@ body {
   margin-top: 0.5rem;
 }
 
-.align-right {
-  text-align: right;
+.favourite-switch {
+  text-align: start;
 }
 </style>

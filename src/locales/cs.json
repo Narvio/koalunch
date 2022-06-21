@@ -14,5 +14,9 @@
     "note": "Poznámka",
     "message": "Vzkaz",
     "contactMessage": "Máš nějaké přípomínky nebo návrhy na zlepšení? Napiš nám zprávu a my na tom zapracujeme!"
+  },
+  "favourites": {
+    "all": "Vše",
+    "favourites": "Oblíbené"
   }
 }
