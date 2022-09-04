@@ -7,6 +7,8 @@ export interface RestaurantData {
   id: string;
   name: string;
   url: string;
+  dateAdded?: Date;
+  isNew: boolean;
 }
 
 export interface MealData {

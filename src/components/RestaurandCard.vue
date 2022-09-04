@@ -9,7 +9,13 @@
     >
       <p
         class="card-header-title koalunch-card-title"
-      >{{ restaurant?.name }}</p>
+      >
+        <span
+          class="tag is-danger mr-2"
+          v-if="restaurant?.isNew"
+        >{{ $t("restaurant.new") }}</span>
+        {{ restaurant?.name }}
+      </p>
       <a
         v-if="restaurant !== undefined"
         class="button is-ghost koalunch-card-header-button"

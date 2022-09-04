@@ -23,7 +23,7 @@ export default createStore({
       if (state.filterFavourites) {
         restaurants = restaurants.filter((r) => state.favourites.includes(r.id));
       }
-      return restaurants;
+      return restaurants.sort(({ isNew }) => (isNew ? -1 : 1));
     }
   }
 });

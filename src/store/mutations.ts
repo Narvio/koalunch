@@ -1,11 +1,15 @@
 import { RestaurantData } from "@/api/responses/Menu";
+import isNew from "@/utils/isNew";
 import { State } from "vue";
 import { MutationTypes } from "./mutation-types";
 import { ApplyLayoutParams } from "./StoredLayout";
 
 export default {
   [MutationTypes.RestaurantsLoaded](state: State, restaurants: RestaurantData[]): void {
-    state.restaurants = restaurants;
+    state.restaurants = restaurants.map((restaurant) => ({
+      ...restaurant,
+      isNew: isNew(restaurant)
+    }));
   },
 
   [MutationTypes.SearchRestaurants](state: State, query = ""): void {

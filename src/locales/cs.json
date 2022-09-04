@@ -18,5 +18,8 @@
   "favourites": {
     "all": "Vše",
     "favourites": "Oblíbené"
+  },
+  "restaurant": {
+    "new": "NOVINKA"
   }
 }

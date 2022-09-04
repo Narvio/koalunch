@@ -18,5 +18,8 @@
 	"favourites": {
 		"all": "All",
 		"favourites": "Favourites"
+	},
+	"restaurant": {
+		"new": "NEW"
 	}
 }
