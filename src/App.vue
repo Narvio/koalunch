@@ -4,10 +4,10 @@
   <div class="koalunch-logo" />
 
   <div class="columns field search-row">
-    <div class="column is-2 favourite-switch">
+    <div class="column is-4 favourite-switch">
       <show-favourites-switch />
     </div>
-    <div class="column is-4 is-offset-2">
+    <div class="column is-4">
       <div class="control has-icons-left">
         <input
           class="input"

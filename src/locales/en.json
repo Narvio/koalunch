@@ -15,9 +15,10 @@
 		"message": "Message",
 		"contactMessage": "Having some troubles or ideas what to improve? Feel free to leave us a message!"
 	},
-	"favourites": {
+	"viewType": {
 		"all": "All",
-		"favourites": "Favourites"
+		"favourites": "Favourites",
+		"new": "New"
 	},
 	"restaurant": {
 		"new": "NEW"

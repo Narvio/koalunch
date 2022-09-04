@@ -26,7 +26,7 @@
         >
           <ion-icon
             size="large"
-            :name="'star' + (favourites[restaurant.id] ? '' : '-outline')"
+            :name="'heart' + (favourites[restaurant.id] ? '' : '-outline')"
           />
         </span>
       </a>

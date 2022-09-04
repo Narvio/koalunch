@@ -2,6 +2,7 @@ import { RestaurantData } from "@/api/responses/Menu";
 import { ComponentCustomProperties } from "vue";
 import { Store } from "vuex";
 import { StoredLayout } from "./StoredLayout";
+import { ViewType } from "./ViewType";
 
 declare module "@vue/runtime-core" {
   interface State {
@@ -9,7 +10,7 @@ declare module "@vue/runtime-core" {
     restaurants: RestaurantData[];
     layout: StoredLayout;
     favourites: string[];
-    filterFavourites: boolean;
+    viewType: ViewType;
   }
 
   interface ComponentCustomProperties {

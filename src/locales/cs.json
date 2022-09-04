@@ -15,9 +15,10 @@
     "message": "Vzkaz",
     "contactMessage": "Máš nějaké přípomínky nebo návrhy na zlepšení? Napiš nám zprávu a my na tom zapracujeme!"
   },
-  "favourites": {
+  "viewType": {
     "all": "Vše",
-    "favourites": "Oblíbené"
+    "favourites": "Oblíbené",
+    "new": "Nové"
   },
   "restaurant": {
     "new": "NOVINKA"

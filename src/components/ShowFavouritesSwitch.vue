@@ -3,65 +3,81 @@
     class="buttons has-addons koalunch-buttons"
   >
     <a
+      v-for="viewType in viewTypes"
+      :key="viewType"
       class="button koalunch-card-header-button"
       :class="{
-        'is-selected': !filterFavourites,
-        'koalunch-selected': !filterFavourites,
+        'is-selected': selectedViewType === viewType.key,
+        'koalunch-selected': selectedViewType === viewType.key,
       }"
-      @click="() => onSwitch(false)"
+      @click="() => onSwitch(viewType.key)"
     >
       <span class="icon-text">
         <span
           class="icon ion-ionic koalunch-icon"
         >
           <ion-icon
-            :name="'grid' + (filterFavourites ? '-outline' : '')"
+            :name="viewType.icon + (selectedViewType === viewType.key ? '' : '-outline')"
           />
         </span>
-        <span>{{ $t("favourites.all") }}</span>
+        <span>{{ $t(`viewType.${viewType.key.toLocaleLowerCase()}`) }}</span>
       </span>
-    </a>
-
-    <a
-      class="button koalunch-card-header-button"
-      :class="{
-        'is-selected': filterFavourites,
-        'koalunch-selected': filterFavourites
-      }"
-      @click="() => onSwitch(true)"
-    >
-      <span class="icon-text">
-        <span
-          class="icon ion-ionic koalunch-icon"
-        >
-          <ion-icon
-            :name="'star' + (filterFavourites ? '' : '-outline')"
-          ></ion-icon>
-        </span>
-        <span>{{ $t("favourites.favourites") }}</span>
-      </span>
+      <span
+        v-if="viewType.badge"
+        class="tag is-danger ml-1"
+      >{{ viewType?.badge }}</span>
     </a>
   </div>
 </template>
 
 <script lang="ts">
 import { MutationTypes } from "@/store/mutation-types";
+import { ViewType } from "@/store/ViewType";
+import countOfNew from "@/utils/countOfNew";
 import { defineComponent, State } from "vue";
-import { mapMutations, mapState } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
+
+type ViewTypeData = {
+  key: ViewType,
+  icon: string,
+  badge?: string;
+};
 
 export default defineComponent({
   methods: {
     ...mapMutations([
-      MutationTypes.ToggleFilterFavourites
+      MutationTypes.ChangeViewType
     ]),
-    onSwitch(favouritesOnly: boolean) {
-      this[MutationTypes.ToggleFilterFavourites](favouritesOnly);
+    onSwitch(viewType: ViewType) {
+      this[MutationTypes.ChangeViewType](viewType);
     }
   },
   computed: {
     ...mapState({
-      filterFavourites: (state) => (state as State).filterFavourites
-    })
+      countOfNew: (state) => countOfNew((state as State).restaurants)
+    }),
+    ...mapGetters({
+      selectedViewType: "selectedViewType"
+    }),
+
+    viewTypes(): ViewTypeData[] {
+      const availableViewTypes: ViewTypeData[] = [{
+        key: "All",
+        icon: "grid"
+      }, {
+        key: "Favourites",
+        icon: "heart"
+      }];
+
+      if (this.countOfNew > 0) {
+        availableViewTypes.push({
+          key: "New",
+          icon: "bulb",
+          badge: this.countOfNew.toString()
+        });
+      }
+      return availableViewTypes;
+    }
   }
 });
 </script>

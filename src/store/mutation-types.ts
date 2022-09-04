@@ -3,5 +3,5 @@ export enum MutationTypes {
   SearchRestaurants = "SearchRestaurants",
   ApplyLayout = "ApplyLayout",
   MarkFavourite = "MarkFavourite",
-  ToggleFilterFavourites = "ToggleFilterFavourites"
+  ChangeViewType = "ChangeViewType"
 }

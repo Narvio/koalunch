@@ -3,6 +3,7 @@ import isNew from "@/utils/isNew";
 import { State } from "vue";
 import { MutationTypes } from "./mutation-types";
 import { ApplyLayoutParams } from "./StoredLayout";
+import { ViewType } from "./ViewType";
 
 export default {
   [MutationTypes.RestaurantsLoaded](state: State, restaurants: RestaurantData[]): void {
@@ -41,9 +42,9 @@ export default {
     localStorage.setItem("favourites", JSON.stringify(state.favourites));
   },
 
-  [MutationTypes.ToggleFilterFavourites](state: State, enabled: boolean): void {
-    state.filterFavourites = enabled;
+  [MutationTypes.ChangeViewType](state: State, viewType: ViewType): void {
+    state.viewType = viewType;
 
-    localStorage.setItem("filterFavourites", JSON.stringify(state.filterFavourites));
+    localStorage.setItem("viewType", state.viewType);
   }
 };
