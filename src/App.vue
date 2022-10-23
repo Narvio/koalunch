@@ -1,8 +1,12 @@
 <template>
   <nav-bar />
 
-  <div class="koalunch-logo" />
-
+  <div
+    class="koalunch-logo"
+    :class="{
+      'koalunch-logo-hw': isHwWeek
+    }"
+  />
   <div class="columns field search-row">
     <div class="column is-4 favourite-switch">
       <show-favourites-switch />
@@ -59,8 +63,14 @@ export default defineComponent({
     return {
       searchTimeout: 0,
       searchInputValue: "",
-      searchExpression: ""
+      searchExpression: "",
     };
+  },
+  computed: {
+    isHwWeek() {
+      const now = new Date();
+      return (now.getMonth() === 9 && now.getDate() >= 24);
+    }
   },
   watch: {
     searchInputValue(value: string) {
@@ -98,6 +108,9 @@ body {
   background-repeat: no-repeat;
   background-size: contain;
   background-position-y: 1rem;
+}
+.koalunch-logo-hw {
+  background-image: url("./assets/logo_transparent_hw.png");
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
